@@ -109,7 +109,7 @@ It is a step toward building a complete digital ecosystem for the Santali langua
 
 ## Shibnath Hansda
 
-**Founder & Developer of OLCHIKILANG**
+**Founder & Developer of OLCHIKIME**
 
 Cybersecurity Enthusiast • Linux Developer • Security Researcher
 
