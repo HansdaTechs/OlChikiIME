@@ -1,4 +1,4 @@
-# OlChikiME ⌨️
+# OlChikiME
 
 > A modern gaming-inspired and developer-friendly keyboard for the Santali (Ol Chiki) language.
 
