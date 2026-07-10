@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="sat">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OlChikiIME - Powerd by Disom Labs</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Ol+Chiki:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #050507;
+            color: #d1d1d6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 0 20px 40px 20px;
+            user-select: none;
+        }
+
+        /* PREMIUM TOP NAVIGATION */
+        .top-nav {
+            width: 100%;
+            max-width: 1440px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #161622;
+            margin-bottom: 25px;
+        }
+
+        .brand-logo {
+            font-weight: 800;
+            color: #ffcc00;
+            letter-spacing: 2px;
+            font-size: 14px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: #8e8e93;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #ffcc00;
+        }
+
+        /* OVERVIEW DASHBOARD PANEL */
+        .overview-panel {
+            width: 100%;
+            max-width: 1440px;
+            background: #0d0d12;
+            border: 1px solid #1c1c28;
+            border-left: 4px solid #ffcc00;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+        
+        .overview-panel h2 {
+            font-size: 13px;
+            color: #ffcc00;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .overview-panel p {
+            font-size: 13px;
+            color: #a5a5b2;
+            line-height: 1.6;
+        }
+
+        /* SPLIT STRUCTURAL LAYOUT */
+        .main-layout {
+            display: flex;
+            width: 100%;
+            max-width: 1440px;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        /* SIDEBAR / DISTRIBUTION DECK */
+        .sidebar {
+            flex: 1;
+            max-width: 260px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .sidebar-section {
+            background: #0d0d12;
+            border: 1px solid #1c1c28;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .section-title {
+            font-size: 11px;
+            color: #636366;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .download-card {
+            background: #161622;
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .download-card:hover {
+            border-color: #ffcc00;
+            background: #1f1f2e;
+            box-shadow: 0 0 10px rgba(255,204,0,0.1);
+        }
+
+        .download-card h4 {
+            font-size: 13px;
+            color: #ffcc00;
+            margin-bottom: 4px;
+        }
+
+        .download-card p {
+            font-size: 11px;
+            color: #8e8e93;
+            line-height: 1.4;
+        }
+
+        /* MAIN GAMING INPUT CONSOLE */
+        .board-container {
+            flex: 4;
+            background: #0d0d12;
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid #1c1c28;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #f2f2f7;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .status-panel {
+            display: flex;
+            gap: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #8e8e93;
+        }
+
+        .indicator { display: flex; align-items: center; gap: 6px; }
+        .led {
+            width: 7px;
+            height: 7px;
+            background: #232330;
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
+        .led.active-caps { background: #ff453a; box-shadow: 0 0 10px #ff453a, 0 0 4px #ff453a; }
+        .led.active-shift { background: #ffcc00; box-shadow: 0 0 10px #ffcc00, 0 0 4px #ffcc00; }
+
+        #textarea {
+            width: 100%;
+            height: 150px;
+            background: #050507;
+            border: 1px solid #232330;
+            border-radius: 8px;
+            color: #ffcc00; 
+            padding: 16px;
+            font-size: 24px;
+            font-family: 'Noto Sans Ol Chiki', sans-serif;
+            resize: none;
+            outline: none;
+            margin-bottom: 20px;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.8);
+            text-shadow: 0 0 5px rgba(255,204,0,0.2);
+            transition: border 0.3s;
+        }
+        
+        #textarea:focus {
+            border-color: #ffcc00;
+        }
+
+        .action-deck { display: flex; gap: 15px; margin-bottom: 25px; }
+        .action-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-cp { background: #ffcc00; color: #050507; box-shadow: 0 3px 0 #b38f00; }
+        .btn-cp:hover { background: #ffe066; transform: translateY(-1px); }
+        .btn-cl { background: #232330; color: #d1d1d6; box-shadow: 0 3px 0 #13131a; }
+        .btn-cl:hover { background: #2f2f42; color: #fff; transform: translateY(-1px); }
+        .action-btn:active { transform: translateY(2px); box-shadow: none !important; }
+
+        /* CHASSIS DESIGN WITH TIMED RGB OUTLINE EFFECTS */
+        .keyboard-chassis {
+            background: #111116;
+            padding: 18px;
+            border-radius: 14px;
+            display: flex;
+            gap: 15px;
+            border: 1px solid #252533;
+            box-shadow: 0 0 25px rgba(0, 184, 212, 0.08), inset 0 1px 1px rgba(255,255,255,0.05);
+            position: relative;
+        }
+
+        .main-block { display: flex; flex-direction: column; gap: 7px; flex: 4.5; }
+        .control-block { display: flex; flex-direction: column; gap: 7px; flex: 1; }
+        .numpad-block { display: flex; flex-direction: column; gap: 7px; flex: 1.2; }
+        .row { display: flex; gap: 5px; width: 100%; }
+
+        /* HIGH END PRO GAMER KEY KEYCAPS SYSTEM */
+        .key {
+            background: #1e1e26;
+            color: #ffcc00; 
+            border: 1px solid #15151c;
+            border-radius: 5px;
+            padding: 15px 0;
+            flex: 1;
+            font-size: 16px;
+            font-family: 'Noto Sans Ol Chiki', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            position: relative;
+            box-shadow: 0 3px 0 #0d0d12, inset 0 1px 0 rgba(255,255,255,0.05);
+            text-shadow: 0 0 4px rgba(255, 204, 0, 0.4);
+            transition: all 0.05s ease;
+        }
+
+        .key::after {
+            content: attr(data-hw);
+            position: absolute;
+            top: 3px;
+            right: 5px;
+            font-size: 8px;
+            font-family: sans-serif;
+            color: #6a6a75;
+            font-weight: 600;
+            opacity: 0.8;
+        }
+
+        /* HARDCORE GAMING WASD NODES SPECIFICATIONS */
+        .key.gaming-wasd {
+            background: #ff2a2a !important; 
+            color: #ffffff !important;    
+            border-color: #bd1414;
+            box-shadow: 0 3px 0 #8a0c0c, inset 0 1px 0 rgba(255,255,255,0.2) !important;
+            text-shadow: 0 0 6px rgba(255, 255, 255, 0.6) !important;
+        }
+
+        .key.gaming-wasd::after {
+            color: rgba(255,255,255,0.7) !important;
+        }
+
+        /* STEALTH MATTE COLOR SYSTEM FOR CORE UTILITIES */
+        .key.system { 
+            font-family: sans-serif; 
+            font-size: 10px; 
+            background: #14141a; 
+            color: #a5a5b2;
+            text-shadow: none;
+            box-shadow: 0 3px 0 #07070a;
+        }
+        
+        .key.fn { 
+            font-family: sans-serif; 
+            font-size: 9px; 
+            color: #00b8d4; 
+            background: #14141a; 
+            text-shadow: 0 0 4px rgba(0, 184, 212, 0.4);
+            box-shadow: 0 3px 0 #07070a;
+        }
+        
+        .key:hover {
+            filter: brightness(1.15);
+        }
+
+        .key:active, .key.active {
+            transform: translateY(3px);
+            box-shadow: 0 0 0 #000 !important;
+            background: #00b8d4 !important; 
+            color: #050507 !important;
+            text-shadow: none !important;
+            border-color: #008ba3 !important;
+        }
+        
+        .key.gaming-wasd:active, .key.gaming-wasd.active {
+            background: #fff !important;
+            color: #ff2a2a !important;
+            text-shadow: none !important;
+        }
+
+        .f-esc { flex: 1.2; background: #e01b1b !important; color: #fff !important; text-shadow: 0 0 4px #fff !important; }
+        .w-backspace { flex: 2; }
+        .w-tab { flex: 1.5; }
+        .w-caps { flex: 1.8; }
+        .w-enter { flex: 2.3; }
+        .w-lshift { flex: 2.4; }
+        .w-rshift { flex: 2.8; }
+        .w-space { flex: 6.5; background: #1a1a24; border-color: #111116; }
+        .w-2x { flex: 2; }
+
+        /* CONTENT EXPANSION DRAWER */
+        .content-panel {
+            width: 100%;
+            max-width: 1440px;
+            background: #0d0d12;
+            border: 1px solid #1c1c28;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 10px;
+            display: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .content-panel h2 { color: #ffcc00; font-size: 16px; margin-bottom: 12px; font-weight: 600; }
+        .content-panel p { font-size: 13px; color: #c5efff; line-height: 1.6; }
+        .content-panel pre { background: #050507; padding: 14px; border-radius: 6px; color: #00b8d4; margin-top: 10px; overflow-x: auto; font-family: monospace; font-size: 12px; border: 1px solid #1c1c28; }
+
+        /* FOOTER PRO COMPLEX SYSTEM */
+        footer {
+            width: 100%;
+            max-width: 1440px;
+            border-top: 1px solid #1c1c28;
+            padding: 40px 0 20px 0;
+            margin-top: 50px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+        }
+
+        .footer-col h4 {
+            font-size: 11px;
+            color: #48485a;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 18px;
+            font-weight: 800;
+        }
+
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 12px; }
+        
+        .footer-col ul li a {
+            font-size: 13px;
+            color: #8a8a99;
+            text-decoration: none;
+            transition: color 0.2s, padding-left 0.2s;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .footer-col ul li a:hover {
+            color: #ffcc00;
+            padding-left: 4px;
+        }
+
+        .footer-brand-info h3 {
+            font-size: 15px;
+            color: #f2f2f7;
+            font-weight: 700;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-brand-info p {
+            font-size: 12px;
+            color: #636370;
+            line-height: 1.5;
+        }
+
+        .tag-os { display: inline-block; background: #161622; color: #ffcc00; font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px; border: 1px solid #252533; }
+
+        @media (max-width: 1024px) {
+            .main-layout { flex-direction: column; }
+            .sidebar { max-width: 100%; }
+            .keyboard-chassis { overflow-x: auto; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="top-nav">
+    <div class="brand-logo">Disom Labs</div>
+    <div class="nav-links">
+        <a onclick="showInfo('docs')">Documentation</a>
+    </div>
+</nav>
+
+<section class="overview-panel">
+    <h2>System Overview</h2>
+    <p>Disom Labs Engine is a high-performance, real-time Unicode mechanical input console, specifically configured for Ol Chiki script rendering and cross-platform processing. This core web interface features a production-grade cursor selection engine, low-latency tone-mapped mechanical click emulation, and customized developer API structures designed to seamlessly manage external system layouts and native hardware integrations.</p>
+</section>
+
+<div class="main-layout">
+    
+    <div class="sidebar">
+        <div class="sidebar-section">
+            <div class="section-title">Android</div>
+            <div class="download-card" onclick="alert('Downloading Android APK stable release...')">
+                <h4>Android APK</h4>
+                <p>Download latest stable release for mobile integration.</p>
+            </div>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="section-title">Source Code</div>
+            <div class="download-card" onclick="alert('Redirecting to GitHub Repository...')">
+                <h4>GitHub Repository</h4>
+                <p>Access production branches, source files and layout configs.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="board-container">
+        <header>
+            <h1>Ol Chiki Core Web Interface</h1>
+            <div class="status-panel">
+                <div class="indicator"><span>CAPS</span><div class="led" id="led-caps"></div></div>
+                <div class="indicator"><span>SHIFT LAYER</span><div class="led" id="led-shift"></div></div>
+            </div>
+        </header>
+        
+        <textarea id="textarea" placeholder="OlChikiIME Powerd By Disom Labs..." autofocus></textarea>
+        
+        <div class="action-deck">
+            <button class="action-btn btn-cp" onclick="copyText()">Copy String</button>
+            <button class="action-btn btn-cl" onclick="clearText()">Reset Buffer</button>
+        </div>
+
+        <div class="keyboard-chassis">
+            <div class="main-block">
+                <div class="row">
+                    <button class="key system f-esc" data-hw="Esc" id="key-escape">ESC</button>
+                    <button class="key fn" data-hw="F1" id="key-f1">F1</button>
+                    <button class="key fn" data-hw="F2" id="key-f2">F2</button>
+                    <button class="key fn" data-hw="F3" id="key-f3">F3</button>
+                    <button class="key fn" data-hw="F4" id="key-f4">F4</button>
+                    <button class="key fn" data-hw="F5" id="key-f5">F5</button>
+                    <button class="key fn" data-hw="F6" id="key-f6">F6</button>
+                    <button class="key fn" data-hw="F7" id="key-f7">F7</button>
+                    <button class="key fn" data-hw="F8" id="key-f8">F8</button>
+                    <button class="key fn" data-hw="F9" id="key-f9">F9</button>
+                    <button class="key fn" data-hw="F10" id="key-f10">F10</button>
+                    <button class="key fn" data-hw="F11" id="key-f11">F11</button>
+                    <button class="key fn" data-hw="F12" id="key-f12">F12</button>
+                </div>
+                <div class="row">
+                    <button class="key" data-hw="~" id="key-`" onclick="press('`','~')">`</button>
+                    <button class="key" data-hw="1" id="key-1" onclick="press('᱑','!')">᱑</button>
+                    <button class="key" data-hw="2" id="key-2" onclick="press('᱒','@')">᱒</button>
+                    <button class="key" data-hw="3" id="key-3" onclick="press('᱓','#')">᱓</button>
+                    <button class="key" data-hw="4" id="key-4" onclick="press('᱔','$')">᱔</button>
+                    <button class="key" data-hw="5" id="key-5" onclick="press('᱕','%')">᱕</button>
+                    <button class="key" data-hw="6" id="key-6" onclick="press('᱖','^')">᱖</button>
+                    <button class="key" data-hw="7" id="key-7" onclick="press('᱗','&')">᱗</button>
+                    <button class="key" data-hw="8" id="key-8" onclick="press('᱘','*')">᱘</button>
+                    <button class="key" data-hw="(" id="key-9" onclick="press('᱙','(')">᱙</button>
+                    <button class="key" data-hw=")" id="key-0" onclick="press('᱐',')')">᱐</button>
+                    <button class="key" data-hw="-" id="key--" onclick="press('-','_')">-</button>
+                    <button class="key" data-hw="=" id="key-=" onclick="press('=','+')">=</button>
+                    <button class="key system w-backspace" data-hw="Bksp" id="key-backspace" onclick="backspace()">BACKSPACE</button>
+                </div>
+                <div class="row">
+                    <button class="key system w-tab" data-hw="Tab" id="key-tab" onclick="press('\t','\t')">TAB</button>
+                    <button class="key" data-hw="Q" id="key-q" onclick="press('ᱚ','ᱚ')">ᱚ</button>
+                    <button class="key gaming-wasd" data-hw="W" id="key-w" onclick="press('ᱛ','ᱛ')">ᱛ</button>
+                    <button class="key" data-hw="E" id="key-e" onclick="press('ᱜ','ᱜ')">ᱜ</button>
+                    <button class="key" data-hw="R" id="key-r" onclick="press('ᱞ','ᱞ')">ᱞ</button>
+                    <button class="key" data-hw="T" id="key-t" onclick="press('ᱟ','ᱟ')">ᱟ</button>
+                    <button class="key" data-hw="Y" id="key-y" onclick="press('ᱠ','ᱠ')">ᱠ</button>
+                    <button class="key" data-hw="U" id="key-u" onclick="press('ᱡ','ᱡ')">ᱡ</button>
+                    <button class="key" data-hw="I" id="key-i" onclick="press('ᱢ','ᱢ')">ᱢ</button>
+                    <button class="key" data-hw="O" id="key-o" onclick="press('ᱤ','ᱤ')">ᱤ</button>
+                    <button class="key" data-hw="P" id="key-p" onclick="press('ᱥ','ᱥ')">ᱥ</button>
+                    <button class="key" data-hw="{" id="key-[" onclick="press('[','{')">[</button>
+                    <button class="key" data-hw="}" id="key-]" onclick="press(']', '}')">]</button>
+                    <button class="key" data-hw="|" id="key-\" onclick="press('\\','|')">\</button>
+                </div>
+                <div class="row">
+                    <button class="key system w-caps" data-hw="Caps" id="key-capslock" onclick="toggleCaps()">CAPS LOCK</button>
+                    <button class="key gaming-wasd" data-hw="A" id="key-a" onclick="press('ᱦ','ᱦ')">ᱦ</button>
+                    <button class="key gaming-wasd" data-hw="S" id="key-s" onclick="press('ᱧ','ᱧ')">ᱧ</button>
+                    <button class="key gaming-wasd" data-hw="D" id="key-d" onclick="press('ᱩ','ᱩ')">ᱩ</button>
+                    <button class="key" data-hw="F" id="key-f" onclick="press('ᱪ','ᱪ')">ᱪ</button>
+                    <button class="key" data-hw="G" id="key-g" onclick="press('ᱫ','ᱫ')">ᱫ</button>
+                    <button class="key" data-hw="H" id="key-h" onclick="press('ᱬ','ᱬ')">ᱬ</button>
+                    <button class="key" data-hw="J" id="key-j" onclick="press('ᱮ','ᱮ')">ᱮ</button>
+                    <button class="key" data-hw="K" id="key-k" onclick="press('ᱯ','ᱯ')">ᱯ</button>
+                    <button class="key" data-hw="L" id="key-l" onclick="press('ᱰ','ᱰ')">ᱰ</button>
+                    <button class="key" data-hw=":" id="key-;" onclick="press('ᱱ',':')">ᱱ</button>
+                    <button class="key" data-hw='"' id="key-'" onclick="press('ᱳ','/')">ᱳ</button>
+                    <button class="key system w-enter" data-hw="Enter" id="key-enter" onclick="press('\n','\n')">ENTER</button>
+                </div>
+                <div class="row">
+                    <button class="key system w-lshift" data-hw="Shift" id="key-shift" onclick="toggleShift()">SHIFT</button>
+                    <button class="key" data-hw="Z" id="key-z" onclick="press('ᱴ','ᱴ')">ᱴ</button>
+                    <button class="key" data-hw="X" id="key-x" onclick="press('ᱵ','ᱵ')">ᱵ</button>
+                    <button class="key" data-hw="C" id="key-c" onclick="press('ᱭ','ᱭ')">ᱭ</button>
+                    <button class="key" data-hw="V" id="key-v" onclick="press('ᱨ','ᱨ')">ᱨ</button>
+                    <button class="key" data-hw="B" id="key-b" onclick="press('ᱲ','ᱲ')">ᱲ</button>
+                    <button class="key" data-hw="N" id="key-n" onclick="press('ᱣ','ᱣ')">ᱣ</button>
+                    <button class="key" data-hw="M" id="key-m" onclick="press('ᱜᱽ','ᱜᱽ')">ᱜᱽ</button>
+                    <button class="key" data-hw="<" id="key-," onclick="press('ᱹ','<')">ᱹ</button>
+                    <button class="key" data-hw=">" id="key-." onclick="press('ᱼ','>')">ᱼ</button>
+                    <button class="key" data-hw="?" id="key-/" onclick="press('/','?')">/</button>
+                    <button class="key system w-rshift" data-hw="Shift" id="key-shift-r" onclick="toggleShift()">SHIFT</button>
+                </div>
+                <div class="row">
+                    <button class="key system" data-hw="Ctrl" id="key-control">CTRL</button>
+                    <button class="key system" data-hw="Win" id="key-meta">WIN</button>
+                    <button class="key system" data-hw="Alt" id="key-alt">ALT</button>
+                    <button class="key w-space" data-hw="Space" id="key-space" onclick="press(' ',' ')">SPACE BAR</button>
+                    <button class="key system" data-hw="Alt" id="key-altgraph">ALT</button>
+                    <button class="key system" data-hw="Ctrl" id="key-control-r">CTRL</button>
+                </div>
+            </div>
+
+            <div class="control-block">
+                <div class="row">
+                    <button class="key system" data-hw="Prt">PRT</button>
+                    <button class="key system" data-hw="Scr">SCR</button>
+                    <button class="key system" data-hw="Pau">PAU</button>
+                </div>
+                <div class="row">
+                    <button class="key system" data-hw="Ins" id="key-insert">INS</button>
+                    <button class="key system" data-hw="Hom" id="key-home" onclick="moveCursor('home')">HOME</button>
+                    <button class="key system" data-hw="PgU" id="key-pageup" onclick="moveCursor('pgup')">PG UP</button>
+                </div>
+                <div class="row">
+                    <button class="key system" data-hw="Del" id="key-delete" onclick="delChar()">DEL</button>
+                    <button class="key system" data-hw="End" id="key-end" onclick="moveCursor('end')">END</button>
+                    <button class="key system" data-hw="PgD" id="key-pagedown" onclick="moveCursor('pgdn')">PG DN</button>
+                </div>
+                <div class="row" style="height: 38px;"></div>
+                <div class="row">
+                    <div style="flex:1;"></div>
+                    <button class="key system" data-hw="▲" id="key-arrowup" onclick="moveCursor('up')">▲</button>
+                    <div style="flex:1;"></div>
+                </div>
+                <div class="row">
+                    <button class="key system" data-hw="◄" id="key-arrowleft" onclick="moveCursor('left')">◄</button>
+                    <button class="key system" data-hw="▼" id="key-arrowdown" onclick="moveCursor('down')">▼</button>
+                    <button class="key system" data-hw="►" id="key-arrowright" onclick="moveCursor('right')">►</button>
+                </div>
+            </div>
+
+            <div class="numpad-block">
+                <div class="row">
+                    <button class="key system" data-hw="Num" id="key-numlock">NUM</button>
+                    <button class="key system" data-hw="/" id="key-numpaddivide" onclick="press('/','/')">/</button>
+                    <button class="key system" data-hw="*" id="key-numpadmultiply" onclick="press('*','*')">*</button>
+                    <button class="key system" data-hw="-" id="key-numpadsubtract" onclick="press('-','-')">-</button>
+                </div>
+                <div class="row">
+                    <button class="key" data-hw="7" id="key-numpad7" onclick="press('᱗','᱗')">᱗</button>
+                    <button class="key" data-hw="8" id="key-numpad8" onclick="press('᱘','᱘')">᱘</button>
+                    <button class="key" data-hw="9" id="key-numpad9" onclick="press('᱙','᱙')">᱙</button>
+                    <button class="key system" data-hw="+" id="key-numpadadd" onclick="press('+','+')">+</button>
+                </div>
+                <div class="row">
+                    <button class="key" data-hw="4" id="key-numpad4" onclick="press('᱔','᱔')">᱔</button>
+                    <button class="key" data-hw="5" id="key-numpad5" onclick="press('᱕','᱕')">᱕</button>
+                    <button class="key" data-hw="6" id="key-numpad6" onclick="press('᱖','᱖')">᱖</button>
+                    <div style="flex:1;"></div>
+                </div>
+                <div class="row">
+                    <button class="key" data-hw="1" id="key-numpad1" onclick="press('᱑','᱑')">᱑</button>
+                    <button class="key" data-hw="2" id="key-numpad2" onclick="press('᱒','᱒')">᱒</button>
+                    <button class="key" data-hw="3" id="key-numpad3" onclick="press('᱓','᱓')">᱓</button>
+                    <button class="key system w-2x" data-hw="Ent" id="key-numpadenter" onclick="press('\n','\n')">ENT</button>
+                </div>
+                <div class="row">
+                    <button class="key w-2x" data-hw="0" id="key-numpad0" onclick="press('0','0')">0</button>
+                    <button class="key system" data-hw="." id="key-numpaddecimal" onclick="press('᱾','᱾')">᱾</button>
+                    <div style="flex:1;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content-panel" id="info-panel">
+    <h2 id="info-title">Documentation</h2>
+    <div id="info-body">Developer resources and integration guides.</div>
+</div>
+
+<footer>
+    <div class="footer-col footer-brand-info">
+        <h3>Built by Disom Labs</h3>
+
+        <p style="margin-top: 8px;">Automated core interface configuration mappings & framework standard architecture compliance.</p>
+    </div>
+    
+    <div class="footer-col">
+        <h4>Ecosystem Links</h4>
+        <ul>
+            <li><a href="https://github.com" target="_blank">GitHub Repository</a></li>
+            <li><a href="https://instagram.com/disomlabs/" target="_blank">Instagram Profile</a></li>
+            <li><a onclick="alert('Opening Contact Support Channel: hansdatechs24@gmail.com internal')">Contact Developer</a></li>
+        </ul>
+    </div>
+    
+    <div class="footer-col">
+        <h4>System Drivers</h4>
+        <ul>
+            <li><a onclick="alert('Initializing Predictive Text Asset Pack download...')">Predictive Text Engine</a></li>
+            <li><a onclick="alert('Downloading Windows x64 Executable Binary...')">Windows Version</a></li>
+            <li><a onclick="alert('Downloading Linux Binary Archive (.tar.gz)...')">Linux Version</a></li>
+        </ul>
+    </div>
+    
+    <div class="footer-col" style="text-align: right;">
+        <h4>Compliance</h4>
+        <p style="font-size: 11px; color: #48485a; margin-bottom: 8px;">Open Source Core Distribution</p>
+        <span class="tag-os">Active Engine Build v4.1</span>
+    </div>
+</footer>
+
+<script>
+    const textarea = document.getElementById('textarea');
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    
+    let shiftActive = false;
+    let capsActive = false;
+    let hardwareShiftPressed = false; 
+    let selectionAnchor = null; 
+
+    const infoData = {
+        docs: {
+            title: "Documentation & Integration Guide",
+            body: "<p>The core engine maps keyboard input directly to standard Ol Chiki Unicode structures (U+1C50 - U+1C7F). Native JavaScript input events allow cross-platform API integrations seamlessly.</p><pre>// API Event Hook Sample\nwindow.addEventListener('olChikiInput', (e) => {\n   console.log('Buffer Content Updated');\n});</pre>"
+        }
+    };
+
+    function showInfo(key) {
+        const panel = document.getElementById('info-panel');
+        document.getElementById('info-title').innerText = infoData[key].title;
+        document.getElementById('info-body').innerHTML = infoData[key].body;
+        panel.style.display = 'block';
+        panel.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function playClickSound() {
+        if (audioCtx.state === 'suspended') { audioCtx.resume(); }
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(1450, audioCtx.currentTime); 
+        osc.frequency.exponentialRampToValueAtTime(160, audioCtx.currentTime + 0.03);
+        gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.035);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.035);
+    }
+
+    function press(normalChar, shiftedChar) {
+        playClickSound();
+        const charToType = shiftActive ? shiftedChar : normalChar;
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        const text = textarea.value;
+        
+        textarea.value = text.substring(0, start) + charToType + text.substring(end);
+        textarea.selectionStart = textarea.selectionEnd = start + charToType.length;
+        
+        if (shiftActive && !hardwareShiftPressed) {
+            shiftActive = false;
+            selectionAnchor = null;
+            document.getElementById('led-shift').classList.remove('active-shift');
+        }
+        textarea.focus();
+    }
+
+    function backspace() {
+        playClickSound();
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        const text = textarea.value;
+        
+        if (start !== end) {
+            textarea.value = text.substring(0, start) + text.substring(end);
+            textarea.selectionStart = textarea.selectionEnd = start;
+        } else if (start > 0) {
+            textarea.value = text.substring(0, start - 1) + text.substring(start);
+            textarea.selectionStart = textarea.selectionEnd = start - 1;
+        }
+        textarea.focus();
+    }
+
+    function delChar() {
+        playClickSound();
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        const text = textarea.value;
+        
+        if (start !== end) {
+            textarea.value = text.substring(0, start) + text.substring(end);
+            textarea.selectionStart = textarea.selectionEnd = start;
+        } else if (start < text.length) {
+            textarea.value = text.substring(0, start) + text.substring(start + 1);
+            textarea.selectionStart = textarea.selectionEnd = start;
+        }
+        textarea.focus();
+    }
+
+    function toggleShift() { 
+        playClickSound(); 
+        shiftActive = !shiftActive; 
+        if (shiftActive) {
+            selectionAnchor = textarea.selectionStart;
+        } else {
+            selectionAnchor = null;
+        }
+        document.getElementById('led-shift').classList.toggle('active-shift', shiftActive); 
+        textarea.focus(); 
+    }
+    
+    function toggleCaps() { playClickSound(); capsActive = !capsActive; document.getElementById('led-caps').classList.toggle('active-caps', capsActive); textarea.focus(); }
+
+    function moveCursor(dir) {
+        playClickSound();
+        let start = textarea.selectionStart;
+        let end = textarea.selectionEnd;
+        const text = textarea.value;
+
+        if ((hardwareShiftPressed || shiftActive) && selectionAnchor === null) {
+            selectionAnchor = start;
+        }
+
+        if (hardwareShiftPressed || shiftActive) {
+            if (dir === 'left' && start > 0) {
+                textarea.setSelectionRange(start - 1, end);
+            } else if (dir === 'right' && end < text.length) {
+                textarea.setSelectionRange(start, end + 1);
+            } else if (dir === 'up') {
+                const currentPos = textarea.selectionStart;
+                const lastLineBreak = text.lastIndexOf('\n', currentPos - 1);
+                if (lastLineBreak !== -1) {
+                    const lineOffset = currentPos - lastLineBreak;
+                    const prevLineBreak = text.lastIndexOf('\n', lastLineBreak - 1);
+                    const targetPos = Math.max(prevLineBreak + lineOffset, prevLineBreak + 1);
+                    textarea.setSelectionRange(Math.min(targetPos, text.length), end);
+                } else {
+                    textarea.setSelectionRange(0, end);
+                }
+            } else if (dir === 'down') {
+                const currentPos = textarea.selectionEnd;
+                const nextLineBreak = text.indexOf('\n', currentPos);
+                if (nextLineBreak !== -1) {
+                    const lastLineBreak = text.lastIndexOf('\n', currentPos - 1);
+                    const lineOffset = currentPos - (lastLineBreak === -1 ? 0 : lastLineBreak + 1);
+                    const downstreamBreak = text.indexOf('\n', nextLineBreak + 1);
+                    const targetPos = downstreamBreak === -1 ? text.length : nextLineBreak + 1 + lineOffset;
+                    textarea.setSelectionRange(start, Math.min(targetPos, downstreamBreak === -1 ? text.length : downstreamBreak));
+                } else {
+                    textarea.setSelectionRange(start, text.length);
+                }
+            }
+        } else {
+            selectionAnchor = null; 
+            if (dir === 'left' && start > 0) textarea.selectionStart = textarea.selectionEnd = start - 1;
+            else if (dir === 'right' && start < text.length) textarea.selectionStart = textarea.selectionEnd = start + 1;
+            else if (dir === 'home') {
+                textarea.selectionStart = textarea.selectionEnd = 0;
+            }
+            else if (dir === 'end') {
+                textarea.selectionStart = textarea.selectionEnd = text.length;
+            }
+            else if (dir === 'up' || dir === 'down') {
+                const modifier = dir === 'up' ? -20 : 20;
+                textarea.selectionStart = textarea.selectionEnd = Math.max(0, Math.min(text.length, start + modifier));
+            }
+        }
+        textarea.focus();
+    }
+
+    function clearText() { textarea.value = ''; selectionAnchor = null; textarea.focus(); }
+    function copyText() { textarea.select(); navigator.clipboard.writeText(textarea.value); }
+
+    window.addEventListener('keydown', (e) => {
+        // Keep browser shortcuts working
+        if (e.ctrlKey || e.metaKey) return;
+
+        let id = e.key.toLowerCase();
+        
+        if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') {
+            hardwareShiftPressed = true;
+            shiftActive = true;
+            if (selectionAnchor === null) selectionAnchor = textarea.selectionStart;
+            document.getElementById('led-shift').classList.add('active-shift');
+        }
+
+        if ((e.key === 'Home' || e.key === 'End') && e.shiftKey) {
+            e.preventDefault();
+            if (selectionAnchor === null) selectionAnchor = textarea.selectionStart;
+            if (e.key === 'Home') textarea.setSelectionRange(selectionAnchor,0);
+            else textarea.setSelectionRange(selectionAnchor, textarea.value.length);
+            return;
+        }
+
+        if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === 'ArrowUp' || e.key === 'ArrowDown') && e.shiftKey) {
+            e.preventDefault();
+            let direction = 'left';
+            if (e.key === 'ArrowRight') direction = 'right';
+            if (e.key === 'ArrowUp') direction = 'up';
+            if (e.key === 'ArrowDown') direction = 'down';
+            moveCursor(direction);
+            return;
+        }
+
+        if (e.code === 'Backspace' || e.code === 'Delete') {
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            if (start !== end) {
+                e.preventDefault();
+                if (e.code === 'Backspace') backspace();
+                else delChar();
+                return;
+            }
+        }
+
+        if (e.code.startsWith('Numpad') && e.code !== 'NumpadEnter') id = e.code.toLowerCase();
+        else if (e.code === 'Space') id = 'space';
+        else if (e.code === 'Backspace') id = 'backspace';
+        else if (e.code === 'CapsLock') id = 'capslock';
+        else if (e.code === 'Escape') id = 'escape';
+        else if (e.code === 'ArrowUp') id = 'arrowup';
+        else if (e.code === 'ArrowDown') id = 'arrowdown';
+        else if (e.code === 'ArrowLeft') id = 'arrowleft';
+        else if (e.code === 'ArrowRight') id = 'arrowright';
+
+        const target = document.getElementById(`key-${id}`);
+        if (target && id !== 'shift' && id !== 'shift-r') { 
+            e.preventDefault(); 
+            target.classList.add('active'); 
+            target.click(); 
+        }
+    });
+
+    window.addEventListener('keyup', (e) => {
+        let id = e.key.toLowerCase();
+        
+        if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') {
+            hardwareShiftPressed = false;
+            shiftActive = false;
+            selectionAnchor = null;
+            document.getElementById('led-shift').classList.remove('active-shift');
+        }
+
+        if (e.code.startsWith('Numpad') && e.code !== 'NumpadEnter') id = e.code.toLowerCase();
+        else if (e.code === 'Space') id = 'space';
+        else if (e.code === 'Backspace') id = 'backspace';
+        else if (e.code === 'CapsLock') id = 'capslock';
+        else if (e.code === 'Escape') id = 'escape';
+        else if (e.code === 'ArrowUp') id = 'arrowup';
+        else if (e.code === 'ArrowDown') id = 'arrowdown';
+        else if (e.code === 'ArrowLeft') id = 'arrowleft';
+        else if (e.code === 'ArrowRight') id = 'arrowright';
+
+        const target = document.getElementById(`key-${id}`);
+        if (target) target.classList.remove('active');
+    });
+</script>
+
+</body>
+</html>
