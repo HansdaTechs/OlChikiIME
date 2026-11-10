@@ -117,7 +117,7 @@ Cybersecurity Enthusiast • Linux Developer • Security Researcher
 
 [![GitHub](https://img.shields.io/badge/GitHub-Hero24--x-181717?style=for-the-badge&logo=github)](https://github.com/Hero24-x)
 
-[![Instagram](https://img.shields.io/badge/Instagram-@ethicalhansda-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://instagram.com/ethicalhansda)
+[![Instagram](https://img.shields.io/badge/Instagram-@shadowmonarchx69-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/shadowmonarchx69)
 
 [![Email](https://img.shields.io/badge/Email-hansdatechs24@gmail.com-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:hansdatechs24@gmail.com)
 
